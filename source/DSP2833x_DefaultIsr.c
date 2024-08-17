@@ -319,42 +319,26 @@ interrupt void  ADCINT_ISR(void) // ADC Interrupt
 
     if(Cal_Offset_Chk == 2)CalculateADC();              // 함수 실행
 
-    if(Gen_IaRef_Chk == 1)GenerateIaRef();			// Ia_Ref 파형을 +-로 Ia_ref_easyDSP 값 만큼 주기적으로 생성
-    else Ia_ref = 0.0;
-
-    // Calculate back EMF
-    if(Ia_ref != 0.0)
+    // Select Controller
+    if(Str_Controller_Chk == 1)StartCurrentControl();      // 1일때, 전류 제어기만 작동
+    else if(Str_Controller_Chk == 2)StartSpeedControl();   // 2일 때, 속도 제어기(+전류제어기) 작동
+    else                                                // 다른 숫자일 때, 전류,속도지령 = 0
     {
-        if(V_emf > 12.0) V_emf = 12.0;
-        else if(V_emf < -12.0) V_emf = -12.0;
-        else
-        {
-            Wm_esti += Kt*Ia_sensor*Ts/J;
-            V_emf = Ke*Wm_esti/9.55;
-        }
+        Ia_ref = 0.0;
+        Wm_ref = 0.0;
+        V_ref = 0.0;
     }
+
+    // Select Reference Waveform Generator
+    if(Gen_Ref_Chk == 1)GenerateIaRef();                // Ia_Ref 파형 생성
+    else if(Gen_Ref_Chk == 2)GenerateWmRef();		    // Wm_Ref 파형 생성
     else
     {
-        Wm_esti = 0.0;
-        V_emf = 0.0;
+        Ia_ref = 0.0;
+        Wm_ref = 0.0;
     }
 
-    // Operate PI Control
-    Ia_err = Ia_ref - Ia_sensor;
-    Ia_err_anti = Ia_err - Ka*Ia_anti;
-    Ia_err_int += Ki*Ts*Ia_err_anti;
-    V_ref_ff = Ia_err_int + Kp*Ia_err;
-//    V_ref_ff = V_ref_fb + V_emf;
-
-    if (V_ref_ff > Vdc) V_ref = Vdc;
-    else if (V_ref_ff < -Vdc) V_ref = -Vdc;
-    else V_ref = V_ref_ff;
-
-    Ia_anti = V_ref_ff - V_ref;
-
-    Ia_sensor_old = Ia_sensor;
-
-    // Transform duty_ref to duty
+     // Transform duty_ref to duty
     duty_ref = V_ref / (2.0 * Vdc) + 0.5;
     duty = (float)(duty_ref * 7500);
 

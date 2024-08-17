@@ -205,7 +205,7 @@ void CalculateADC()
 void GenerateIaRef()
 {
 	    // 전류 지령값 생성
-	    if(count < Ia_ref_time*20000)
+	    if(count < Ref_time*20000)
 	    {
 	       Ia_ref = Ia_ref_amp;
 
@@ -228,6 +228,126 @@ void GenerateIaRef()
 	       else
 	    {
 	        count = 0;
-	        Gen_IaRef_Chk = 0;
+	        Gen_Ref_Chk = 0;
 	    }
+}
+
+/*------------------------------------------*/
+/*  Generate Wm_Ref Waveform generateWmRef() */
+/*------------------------------------------*/
+void GenerateWmRef()
+{
+        // 속도 지령값 생성
+        if(count < Ref_time*20000)
+        {
+           Wm_ref = Wm_ref_amp;
+           count++;
+        }
+//      } else if (count >= Ia_ref_time*20000 && count < Ia_ref_time*40000)
+//      {
+//          Ia_ref = 0;
+//          count++;
+//      }
+//       else if (count >= Ia_ref_time*40000 && count < Ia_ref_time*60000)
+//      {
+//          Ia_ref = -Ia_ref_amp;
+//          count++;
+//      } else if (count >= Ia_ref_time*60000 && count < Ia_ref_time*80000)
+//      {
+//          Ia_ref = 0;
+//          count++;
+//      } else
+           else
+        {
+            count = 0;
+            Gen_Ref_Chk = 0;
+        }
+}
+
+
+/*------------------------------------------*/
+/*  Start Current Control  StartCurrentControl() */
+/*------------------------------------------*/
+void StartCurrentControl()
+{
+    // Calculate back EMF using Speed
+    if(Ia_ref != 0.0)
+    {
+        if(V_emf > Vdc) V_emf =  Vdc;
+        else if(V_emf < - Vdc) V_emf = -Vdc;
+        else
+        {
+            Wm_esti += Kt*Ia_sensor*Ts/J;
+            V_emf = Ke*Wm_esti/9.55;
+        }
+    }
+    else
+    {
+        Wm_esti = 0.0;
+        V_emf = 0.0;
+    }
+
+    // Operate Current Control
+    Ia_err = Ia_ref - Ia_sensor;
+    Ia_err_anti = Ia_err - Kac*Ia_anti;
+    Ia_err_int += Kic*Ts*Ia_err_anti;
+    V_ref_ff = Ia_err_int + Kpc*Ia_err;
+//    V_ref_ff = V_ref_fb + V_emf;
+
+    if (V_ref_ff > Vdc) V_ref = Vdc;
+    else if (V_ref_ff < -Vdc) V_ref = -Vdc;
+    else V_ref = V_ref_ff;
+
+    Ia_anti = V_ref_ff - V_ref;
+
+    Ia_sensor_old = Ia_sensor;
+}
+
+/*------------------------------------------*/
+/*  Start Speed Control  StartSpeedControl() */
+/*------------------------------------------*/
+void StartSpeedControl()
+{
+    // Calculate back EMF using Speed
+    if(Ia_ref != 0.0)
+    {
+        if(V_emf > Vdc) V_emf =  Vdc;
+        else if(V_emf < - Vdc) V_emf = -Vdc;
+        else
+        {
+            Wm_esti += Kt*Ia_sensor*Ts/J;
+            V_emf = Ke*Wm_esti/9.55;
+        }
+    }
+    else
+    {
+        Wm_esti = 0.0;
+        V_emf = 0.0;
+    }
+
+    // Operate Speed Control
+    Wm_err = Wm_ref - Wm_esti;
+    Wm_err_anti = Wm_err - Kas * Wm_anti;
+    Wm_err_int += Kis * Ts * Wm_err_anti;
+    Ia_ref_fb = Wm_err_int + Kps * Wm_err;
+
+    if (Ia_ref_fb > Ia_stall) Ia_ref = Ia_stall;
+    else if (Ia_ref_fb < -Ia_stall) Ia_ref = -Ia_stall;
+    else Ia_ref_fb = Ia_ref;
+
+    Wm_anti = Ia_ref_fb - Ia_ref;
+
+    // Operate Current Control
+    Ia_err = Ia_ref - Ia_sensor;
+    Ia_err_anti = Ia_err - Kac*Ia_anti;
+    Ia_err_int += Kic*Ts*Ia_err_anti;
+    V_ref_ff = Ia_err_int + Kpc*Ia_err;
+
+    if (V_ref_ff > Vdc) V_ref = Vdc;
+    else if (V_ref_ff < -Vdc) V_ref = -Vdc;
+    else V_ref = V_ref_ff;
+
+    Ia_anti = V_ref_ff - V_ref;
+
+    Ia_sensor_old = Ia_sensor;
 }

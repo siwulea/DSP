@@ -89,6 +89,9 @@ extern void CalculateADC(void);
 extern void CalculateADCOffset(void);
 extern void CalculateADCScale(void);
 extern void GenerateIaRef(void);
+extern void GenerateWmRef(void);
+extern void StartCurrentControl(void);
+extern void StartSpeedControl(void);
 extern void CalibrateADC(void);
 extern void Init_Code(void);
 extern void Init_eQEP1(void);
@@ -352,17 +355,17 @@ typedef struct {
     extern float Ia_anti;
     extern float P_cl;
     extern float I_cl;
-    extern float Kp;
+    extern float Kpc;
     extern float Wcc;
-    extern float Ki;
-    extern float Ka;
+    extern float Kic;
+    extern float Kac;
     extern float J;
     extern float duty;
     extern float duty_ref;
     extern float Ia_ref_amp;
     extern float Vdc;
-    extern float Gen_IaRef_Chk;
-    extern float Ia_ref_time;
+    extern int Gen_Ref_Chk;
+    extern float Ref_time;
 
     extern float V_emf;
     extern float Ke;
@@ -370,6 +373,25 @@ typedef struct {
 
     extern float count_emf;
     extern float Ia_sensor_old;
+
+    extern int Str_Controller_Chk;
+
+
+    // Speed Control
+    extern float Wm_err;
+    extern float Wm_ref;
+    extern float Wm_err_anti;
+    extern float Wm_err_int;
+    extern float Wm_ref_amp;
+    extern float Wm_anti;
+
+    extern float Wcs;
+    extern float Kas;
+    extern float Kps;
+    extern float Kis;
+
+    extern float Ia_ref_fb;
+    extern float Ia_stall;
 
     /*------------------------------*/
     /*  Protection Variables        */

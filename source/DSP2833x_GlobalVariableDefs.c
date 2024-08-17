@@ -453,13 +453,14 @@ volatile struct XINTF_REGS XintfRegs;
     float P_cl = 0.;
     float I_cl = 0.;
     float J = 0.0;
-    float Kp = 0.0;
-    float Ki = 0.0;
-    float Ka = 0.0;
+    float Kpc = 0.0;
+    float Kic = 0.0;
+    float Kac = 0.0;
     float duty = 3750.0;
     float duty_ref = 0.;
-    float Gen_IaRef_Chk = 0.;
-    float Ia_ref_time = 0.;
+
+    int Gen_Ref_Chk = 0;
+    float Ref_time = 0.;
 
     float V_emf = 0.0;
     float Kt = 0.0;
@@ -467,6 +468,24 @@ volatile struct XINTF_REGS XintfRegs;
 
     float count_emf = 0.0;
     float Ia_sensor_old = 0.0;
+
+    int Str_Controller_Chk = 0.0;
+
+    // Speed Control
+    float Wm_err = 0.0;
+    float Wm_ref = 0.0;
+    float Wm_err_anti = 0.0;
+    float Wm_err_int = 0.0;
+    float Wm_ref_amp = 0.0;
+    float Wm_anti = 0.0;
+
+    float Wcs = 0.0;
+    float Kas = 0.0;
+    float Kps = 0.0;
+    float Kis = 0.0;
+
+    float Ia_ref_fb = 0.0;
+    float Ia_stall = 0.0;
 
 /*------------------------------*/
 /*  Protection Variables        */
@@ -492,8 +511,6 @@ volatile struct XINTF_REGS XintfRegs;
     float A2OffsetCal=0.;
     float A3OffsetCal=0.;
     float A4OffsetCal=0.;
-
-
 
     long CntSequenceTime = 0;
 

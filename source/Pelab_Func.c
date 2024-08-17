@@ -33,23 +33,35 @@
 
 void InitParameter()
 {
-	Ra = 0.3;
-	La = 0.002;
-	Wcc = 2 * PI * 20.0;
-	Kp = La * Wcc;
-	Ki = Ra * Wcc;
-	Ka = 1.0 / Kp;
-	Vdc = 12.0;
-	duty_ref = 0.5;
+    // Motor Parameter
+    Ra = 0.3;
+    La = 0.002;
+    J = 3.517e-5;   // Not Exact
+    Ke = 0.0277;
+    Kt = 0.0277;
 
-	J = 3.517e-5;
+    // Current Control PI Gain
+    Wcc = 2 * PI * 100.0;
+    Kpc = La * Wcc;
+    Kic = Ra * Wcc;
+    Kac = 1.0 / Kpc;
 
-	Ke = 0.0277;
-	Kt = 0.0277;
+    // Speed Control PI Gain
+    Wcs = Wcc / 20;
+    Kps = J * Wcs / Kt;
+    Kis = J * Wcs * Wcs / (5 * Kt);
+    Kas = 1 / Kps;
+    Ia_stall = 2.5;
 
-	Ia_ref_time = 1.0;
+    // Temp Parameter
+    duty_ref = 0.5;
 
-	Ia_ref_amp = 0.0;
+    // Motor Input Reference Parameter
+    Vdc = 16.0;
+    Ref_time = 0.0;
+    Ia_ref_amp = 0.0;
+    Wm_ref_amp = 0.0;
+    Str_Controller_Chk = 0;
 }
 
 //===========================================================================
