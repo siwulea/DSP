@@ -393,6 +393,9 @@ typedef struct {
     extern float Ia_ref_fb;
     extern float Ia_stall;
 
+    extern float V_emf_v;
+    extern float Wm_esti_v;
+
     /*------------------------------*/
     /*  Protection Variables        */
     /*------------------------------*/

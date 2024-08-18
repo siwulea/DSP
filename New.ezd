@@ -1,6 +1,6 @@
 [Basic Page]
-m_strPrjFileName = C:\Users\siwul\workspace_v12\CurrentControl\New.ezd
-m_straOutFileName[0] = C:\Users\siwul\workspace_v12\CurrentControl\Debug\CurrentControl.out
+m_strPrjFileName = C:\Users\siwul\workspace_v12\DCMotorSpeedControl\New.ezd
+m_straOutFileName[0] = C:\Users\siwul\workspace_v12\DCMotorSpeedControl\Debug\DCMotorSpeedControl.out
 m_straOutFileName[1] = 
 m_straOutFileName[2] = 
 m_straOutFileName[3] = 

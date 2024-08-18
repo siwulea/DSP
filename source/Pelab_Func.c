@@ -37,6 +37,7 @@ void InitParameter()
     Ra = 0.3;
     La = 0.002;
     J = 3.517e-5;   // Not Exact
+    //J = 1.517e-4;
     Ke = 0.0277;
     Kt = 0.0277;
 
@@ -51,7 +52,7 @@ void InitParameter()
     Kps = J * Wcs / Kt;
     Kis = J * Wcs * Wcs / (5 * Kt);
     Kas = 1 / Kps;
-    Ia_stall = 2.5;
+    Ia_stall = 2.0;
 
     // Temp Parameter
     duty_ref = 0.5;

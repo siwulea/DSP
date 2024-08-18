@@ -228,6 +228,7 @@ void GenerateIaRef()
 	       else
 	    {
 	        count = 0;
+	        Ia_ref_amp = 0.0;
 	        Gen_Ref_Chk = 0;
 	    }
 }
@@ -260,6 +261,7 @@ void GenerateWmRef()
            else
         {
             count = 0;
+            Wm_ref_amp = 0.0;
             Gen_Ref_Chk = 0;
         }
 }
@@ -311,7 +313,7 @@ void StartSpeedControl()
     // Calculate back EMF using Speed
     if(Ia_ref != 0.0)
     {
-        if(V_emf > Vdc) V_emf =  Vdc;
+        if(V_emf > Vdc) V_emf = Vdc;
         else if(V_emf < - Vdc) V_emf = -Vdc;
         else
         {
@@ -325,6 +327,18 @@ void StartSpeedControl()
         V_emf = 0.0;
     }
 
+    // Calculate back EMF using Voltage
+    if(Ia_ref != 0.0)
+    {
+        if(V_emf_v > Vdc) V_emf_v = Vdc;
+        else if(V_emf_v < -Vdc) V_emf_v = -Vdc;
+        else
+        {
+            V_emf_v = V_ref - Ra * Ia_sensor;
+            Wm_esti_v = (1.0 / Ke) * V_emf_v * 60 / (2.0 * 3.141592);
+        }
+    }
+
     // Operate Speed Control
     Wm_err = Wm_ref - Wm_esti;
     Wm_err_anti = Wm_err - Kas * Wm_anti;
@@ -333,7 +347,7 @@ void StartSpeedControl()
 
     if (Ia_ref_fb > Ia_stall) Ia_ref = Ia_stall;
     else if (Ia_ref_fb < -Ia_stall) Ia_ref = -Ia_stall;
-    else Ia_ref_fb = Ia_ref;
+    else Ia_ref = Ia_ref_fb;
 
     Wm_anti = Ia_ref_fb - Ia_ref;
 

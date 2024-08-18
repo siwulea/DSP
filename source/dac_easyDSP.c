@@ -20,10 +20,10 @@ void Init_Code()
     data_ptr[ri++] = &Ia_ref;           // 2
     data_ptr[ri++] = &V_emf;            // 3
     data_ptr[ri++] = &V_ref;           // 4
-    data_ptr[ri++] = &fdummy;           // 5
-    data_ptr[ri++] = &fdummy;           // 6
-    data_ptr[ri++] = &fdummy;           // 7
-    data_ptr[ri++] = &fdummy;           // 8
+    data_ptr[ri++] = &Wm_ref;           // 5
+    data_ptr[ri++] = &Wm_esti;           // 6
+    data_ptr[ri++] = &V_emf_v;           // 7
+    data_ptr[ri++] = &Wm_esti_v;           // 8
     data_ptr[ri++] = &fdummy;           // 9
 
     data_ptr[ri++] = &fdummy;           // 10

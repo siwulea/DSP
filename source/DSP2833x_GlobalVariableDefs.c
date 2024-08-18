@@ -487,6 +487,9 @@ volatile struct XINTF_REGS XintfRegs;
     float Ia_ref_fb = 0.0;
     float Ia_stall = 0.0;
 
+    float V_emf_v = 0.0;
+    float Wm_esti_v = 0.0;
+
 /*------------------------------*/
 /*  Protection Variables        */
 /*------------------------------*/
