@@ -322,12 +322,6 @@ interrupt void  ADCINT_ISR(void) // ADC Interrupt
     // Select Controller
     if(Str_Controller_Chk == 1)StartCurrentControl();      // 1일때, 전류 제어기만 작동
     else if(Str_Controller_Chk == 2)StartSpeedControl();   // 2일 때, 속도 제어기(+전류제어기) 작동
-    else                                                // 다른 숫자일 때, 전류,속도지령 = 0
-    {
-        Ia_ref = 0.0;
-        Wm_ref = 0.0;
-        V_ref = 0.0;
-    }
 
     // Select Reference Waveform Generator
     if(Gen_Ref_Chk == 1)GenerateIaRef();                // Ia_Ref 파형 생성
@@ -341,6 +335,10 @@ interrupt void  ADCINT_ISR(void) // ADC Interrupt
      // Transform duty_ref to duty
     duty_ref = V_ref / (2.0 * Vdc) + 0.5;
     duty = (float)(duty_ref * 7500);
+
+//    duty = CMP1;
+//    V_ref = ((duty / 7500.) - 0.5 ) * (2.0 * Vdc);
+//    Wm_esti = (V_ref - Ra * Ia_sensor) * (30 / 3.141592) / Ke;
 
     // Generate duty
     EPwm1Regs.CMPA.half.CMPA = (int)duty;

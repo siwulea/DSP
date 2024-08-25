@@ -558,7 +558,7 @@ volatile struct XINTF_REGS XintfRegs;
 
 
 /* ePWM Setting */
-    Uint32 CMP1 = 375; //450//Init Vaiue//375
+    Uint32 CMP1 = 3750; //450//Init Vaiue//375
     Uint32 CMP2 = 375;
     Uint32 CMP3 = 375;
 

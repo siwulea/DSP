@@ -38,17 +38,17 @@ void InitParameter()
     La = 0.002;
     J = 3.517e-5;   // Not Exact
     //J = 1.517e-4;
-    Ke = 0.0277;
+    Ke = 0.0378;   // Tuning
     Kt = 0.0277;
 
     // Current Control PI Gain
-    Wcc = 2 * PI * 100.0;
+    Wcc = 2 * PI * 200.0;
     Kpc = La * Wcc;
     Kic = Ra * Wcc;
     Kac = 1.0 / Kpc;
 
     // Speed Control PI Gain
-    Wcs = Wcc / 20;
+    Wcs = Wcc / 50;
     Kps = J * Wcs / Kt;
     Kis = J * Wcs * Wcs / (5 * Kt);
     Kas = 1 / Kps;
